@@ -130,6 +130,9 @@ export default async function fabricate({
     const cli = new Ollama({ host: ollamaHost });
     let result: Talk | null = null;
 
+    // Pull the model to make sure it's up to date. This may take a hot minute on first run.
+    await cli.pull({ model, stream: false });
+
     const prompt = synthesizePrompt({ tools, rant });
 
     while (result === null) {
@@ -140,7 +143,7 @@ export default async function fabricate({
                 format: "json",
             });
 
-            console.log(response.response);
+            console.log("model response:", JSON.stringify(JSON.parse(response.response)));
 
             let data: MistralToolUse[] | MistralToolUse = JSON.parse(response.response);
 
@@ -158,7 +161,7 @@ export default async function fabricate({
 
             // If the tool use is the summarize_rant function, we can parse the arguments as a Talk.
             // If not, it'll try again with the next invocation.
-            if (data.name === "summarize_rant") {
+            if (data.name.toLowerCase() === "summarize_rant") {
                 const talk = TalkSchema.parse(data.arguments);
                 return talk;
             }
