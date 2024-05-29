@@ -1,41 +1,30 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Rant2Outline" },
+    {
+      name: "description",
+      content: "Turn those rants into meetup talk outlines!",
+    },
   ];
 };
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+    <div>
+      <h1>rant2outline</h1>
+      <p>Turn those rants into meetup talk outlines!</p>
+      <Form method="post" action="/summarize">
+        <span style={{ marginBottom: "4rem" }}>Enter your rant here:</span>
+        <br />
+        <br />
+        <textarea name="rant" rows={20} cols={80} required></textarea>
+        <br />
+        <br />
+        <button type="submit">Summarize</button>
+      </Form>
     </div>
   );
 }

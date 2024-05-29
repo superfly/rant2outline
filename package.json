@@ -1,7 +1,8 @@
 {
-  "name": "recipeficator",
+  "name": "rant2outline",
   "private": true,
   "sideEffects": false,
+  "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
@@ -15,8 +16,10 @@
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
     "isbot": "^4.1.0",
+    "ollama": "^0.5.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.9.2",
