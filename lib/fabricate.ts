@@ -7,7 +7,24 @@ const synthesizePrompt = ({
 }: {
     tools: any[],
     rant: string,
-}) => `[AVAILABLE_TOOLS]${JSON.stringify(tools)}[/AVAILABLE_TOOLS][INST] Can you summarize my rant?
+}) =>
+    // Xe\ Okay this is a bit galaxy brain so I'm going to explain this in detail. Ollama supports
+    // "tokenizing" your prompt for you, or taking the user-provided prompt and splitting it into
+    // the raw form that the model expects. This is done by taking the messages as a list of objects
+    // and then applying each object to the prompt template in order.
+    //
+    // The cursed thing I'm doing here is manually defining my own prompt with the [AVAILABLE_TOOLS]
+    // magic token. This token is understood by the model as a list of tools that are available to
+    // use with responses.
+    //
+    // The other main cursed thing is that I am ending this "prompt" with the [TOOL_CALLS] magic token.
+    // This tells the model that it's expected to generate a tool invocation JSON array, which I can
+    // then parse because Ollama is set into "only allow JSON to be generated" mode.
+    //
+    // This effectively puts the model into a stranglehold that will force it to generate _something_
+    // that we can parse into either a Talk object or a MistralToolUse object. I'm not sure why it's
+    // sometimes generating the Talk object directly, but fuck it, we ball.
+    `[AVAILABLE_TOOLS]${JSON.stringify(tools)}[/AVAILABLE_TOOLS][INST] Can you summarize my rant?
 
 ${rant} [/INST] [TOOL_CALLS]`;
 
@@ -43,6 +60,10 @@ export interface Talk {
     sections: string[];
 }
 
+// Xe\ This is the list of tools that are available when the model is running. In an ideal world, this
+// would be generated from the Zod schema. However at this point, I'm chaining together a bunch of things
+// I've either never used before or have only basic knowledge of, so I'm just going to hardcode this
+// for now in a last-ditch attempt to regain some kind of cognitive simplicity.
 const tools = [
     {
         "type": "function",
@@ -91,11 +112,21 @@ export interface MistralToolUse {
     arguments: Talk;
 }
 
+// fabricate generates a Talk from the given `rant`.
+//
+// This function potentially has infinite runtime, as it will keep trying to generate a Talk until it
+// succeeds. This is because the model may return a JSON object that is not a Talk, in which case it
+// will try again.
+//
+// In my limited testing, this usually gets the result you want in one or two tries. There's some
+// room for improvement here, but I'm not sure what that would look like. Probably would need the
+// ability to use arbitrary BNF grammars in Ollama, because you can compile JSON schemae to BNF
+// with some code published by the team behind llama.cpp.
 export default async function fabricate({
     rant,
     model = "mistral",
     ollamaHost = "http://localhost:11434",
-}: FabricateArgs) {
+}: FabricateArgs): Promise<Talk> {
     const cli = new Ollama({ host: ollamaHost });
     let result: Talk | null = null;
 
