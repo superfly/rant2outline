@@ -9,17 +9,22 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "yeet": "node ./scripts/yeet.mjs"
   },
   "dependencies": {
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
+    "inquirer": "^9.2.22",
     "isbot": "^4.1.0",
     "ollama": "^0.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "zod": "^3.23.8"
+    "toml": "^3.0.0",
+    "unique-names-generator": "^4.7.1",
+    "zod": "^3.23.8",
+    "zx": "^8.1.2"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.9.2",

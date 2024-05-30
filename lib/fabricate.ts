@@ -125,8 +125,8 @@ export interface MistralToolUse {
 // with some code published by the team behind llama.cpp.
 export default async function fabricate({
     rant,
-    model = "mistral",
-    ollamaHost = "http://localhost:11434",
+    model = "mistral:v0.3",
+    ollamaHost = process.env.OLLAMA_HOST || "http://localhost:11434",
 }: FabricateArgs): Promise<Talk> {
     const cli = new Ollama({ host: ollamaHost });
     let result: Talk | null = null;
