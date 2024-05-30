@@ -79,6 +79,11 @@ const defaultName = (() => {
     return uniqueNameGen();
 })();
 
+if (recreate) {
+    console.log("Recreating app, removing existing fly.tomls");
+    await $`rm fly.toml run/gpu/fly.toml`;
+}
+
 inquirer
     .prompt([
         {
@@ -94,12 +99,12 @@ inquirer
         {
             name: "region",
             message: "Which region should the GPU app be deployed to?",
-            default: "sea",
+            default: "ord",
         },
         {
             name: "gpuKind",
             message: "Which GPU kind should the GPU app use?",
-            default: "l40s",
+            default: "a100-40gb",
         },
         {
             name: "appName",
@@ -108,17 +113,13 @@ inquirer
         },
     ])
     .then(async ({ gpuAppName, region, gpuKind, org, appName }) => {
-        if (recreate) {
-            console.log("Recreating app, removing existing fly.tomls");
-            await $`rm fly.toml run/gpu/fly.toml`;
-        }
-
         if (!existsSync("run/gpu/fly.toml")) {
             console.log("run/gpu/fly.toml not found, creating GPU app first");
             await $`fly apps create -o ${org} ${gpuAppName}`;
             await $`mkdir -p "run/gpu"`;
             writeFileSync(`run/gpu/fly.toml`, fabricateOllamaHostFlyToml({ name: gpuAppName, region, gpuKind }));
             await $`cd run/gpu && fly ips allocate-v6 --private -a ${gpuAppName}`;
+            console.log("deploying GPU app, this may take a hot minute...");
             await $`cd run/gpu && fly deploy`;
             console.log(`GPU app ${gpuAppName} deployed!`);
         }
@@ -130,6 +131,7 @@ inquirer
             console.log("fly.toml already exists, skipping app creation, setting OLLAMA_HOST secret to point to GPU app");
             await $`fly secrets set OLLAMA_HOST="http://${gpuAppName}.flycast"`;
         }
+        console.log("deploying app, this may take a hot minute...");
         await $`fly deploy`;
 
         console.log(`App ${appName} deployed! Head to https://${appName}.fly.dev to see it in action!`);

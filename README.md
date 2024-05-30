@@ -40,7 +40,7 @@ Run `npm run yeet` to deploy this to Fly.io. You will need to have the
 Fly CLI installed and be logged in. This will create the following
 resources:
 
-- A Fly.io with a GPU to run Mistral (defaults to a L40s in SEA unless
+- A Fly.io with a GPU to run Mistral (defaults to a A100 in ORD unless
   you say otherwise in the prompts), it will automatically stop when
   not in use.
 - A 16 GB volume to store the Mistral model in (this is overkill given
