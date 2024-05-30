@@ -24,8 +24,11 @@ export async function action({ request }: ActionFunctionArgs) {
     return new Response("Rant is required.", { status: 400 });
   }
 
+  console.log("attempting fabrication...");
+
   try {
     const rantSummary = await fabricate({ rant: `${rant}` });
+    console.log("fabrication complete");
     return json(rantSummary);
   } catch (error) {
     return new Response("Failed to summarize rant.", { status: 500 });

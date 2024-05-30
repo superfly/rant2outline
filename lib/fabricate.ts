@@ -132,15 +132,21 @@ export default async function fabricate({
 
     // Pull the model to make sure it's up to date. This may take a hot minute on first run.
     await cli.pull({ model, stream: false });
+    console.log("model pulled");
 
     const prompt = synthesizePrompt({ tools, rant });
+    console.log("prompt synthesized");
 
+    let tries = 0;
     while (result === null) {
+        tries += 1;
+        console.log(`try ${tries}`);
         try {
             const response = await cli.generate({
                 model,
                 prompt,
                 format: "json",
+                keep_alive: 0,
             });
 
             console.log("model response:", JSON.stringify(JSON.parse(response.response)));

@@ -24,26 +24,44 @@ export default function Index() {
         <br />
         <br />
         <textarea
+          style={{ width: "100%", height: "20rem", resize: "none" }}
           name="rant"
-          rows={20}
-          cols={80}
           required
           readOnly={loading}
         ></textarea>
         <br />
         <br />
         <button
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
           type="submit"
           onClick={() => {
             setLoading(true);
             setInterval(() => {
-              setPeriodCount((prev) => prev + 1);
+              setPeriodCount((prev) => {
+                if (prev >= 20) {
+                  return 0;
+                }
+                return prev + 1;
+              });
             }, 250);
           }}
         >
           Summarize
         </button>
-        {loading && <span> Loading...{".".repeat(periodCount)}</span>}
+        {loading && (
+          <span
+            style={{
+              display: "block",
+              textAlign: "center",
+            }}
+          >
+            {" "}
+            Loading...{".".repeat(periodCount)}
+          </span>
+        )}
       </Form>
     </div>
   );

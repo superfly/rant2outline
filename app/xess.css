@@ -1,7 +1,10 @@
 @import url("/css/font/inter.css");
 @import url("/css/font/podkova.css");
 
-:root { font-family: "InterVariable", sans-serif; font-optical-sizing: auto; }
+:root {
+  font-family: "InterVariable", sans-serif;
+  font-optical-sizing: auto;
+}
 
 h1,
 h2,
@@ -11,20 +14,23 @@ h5,
 h6 {
   font-family: "Podkova", serif;
 }
+
 h1 {
-    font-size: 1.5rem/* 24px */;
-    line-height: 2rem/* 32px */;
-    font-weight: 800;
+  font-size: 2rem;
+  line-height: 2rem;
+  font-weight: 800;
 }
+
 h2 {
-    font-size: 1.25rem/* 20px */;
-    line-height: 1.75rem/* 28px */;
-    font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
 }
+
 h3 {
-    font-size: 1.125rem/* 18px */;
-    line-height: 1.75rem/* 28px */;
-    font-weight: 600;
+  font-size: 1.125rem /* 18px */;
+  line-height: 1.75rem /* 28px */;
+  font-weight: 600;
 }
 
 main {
@@ -33,30 +39,36 @@ main {
   padding: 2rem;
   margin: auto;
 }
+
 @media only screen and (max-device-width: 736px) {
   main {
     padding: 0;
   }
 }
+
 ::selection {
   background: #d3869b;
 }
+
 body {
   background: #1d2021;
   color: #f9f5d7;
 }
+
 pre {
   background-color: #3c3836;
   padding: 1em;
   border: 0;
   font-family: "monospace", monospace;
 }
+
 a,
 a:active,
 a:visited {
   color: #b16286;
   background-color: #282828;
 }
+
 h1,
 h2,
 h3,
@@ -64,40 +76,27 @@ h4,
 h5 {
   margin-bottom: 0.1rem;
 }
+
 blockquote {
   border-left: 1px solid #bdae93;
   margin: 0.5em 10px;
   padding: 0.5em 10px;
 }
+
 footer {
   align: center;
 }
-@media (prefers-color-scheme: light) {
-  body {
-    background: #f9f5d7;
-    color: #1d2021;
-  }
-  pre {
-    background-color: #ebdbb2;
-    padding: 1em;
-    border: 0;
-  }
-  a,
-  a:active,
-  a:visited {
-    color: #b16286;
-    background-color: #fbf1c7;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    margin-bottom: 0.1rem;
-  }
-  blockquote {
-    border-left: 1px solid #655c54;
-    margin: 0.5em 10px;
-    padding: 0.5em 10px;
-  }
+
+#sigil {
+  background-color: #fdf5d7;
+  -webkit-mask: url("/img/xeiaso.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100%;
+  mask: url("/img/xeiaso.svg");
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+  height: 3rem;
+  width: 1.5rem;
+  display: inline-block;
+  vertical-align: middle;
 }
