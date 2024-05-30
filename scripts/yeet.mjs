@@ -100,11 +100,13 @@ inquirer
             name: "region",
             message: "Which region should the GPU app be deployed to?",
             default: "ord",
+            choices: ["ord"],
         },
         {
             name: "gpuKind",
             message: "Which GPU kind should the GPU app use?",
             default: "a100-40gb",
+            choices: ["a100-40gb", "l40s", "a10"],
         },
         {
             name: "appName",
