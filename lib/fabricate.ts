@@ -116,7 +116,8 @@ export interface MistralToolUse {
 //
 // This function potentially has infinite runtime, as it will keep trying to generate a Talk until it
 // succeeds. This is because the model may return a JSON object that is not a Talk, in which case it
-// will try again.
+// will try again. It will also give up after 10 tries, because at that point it's probably not going
+// to work.
 //
 // In my limited testing, this usually gets the result you want in one or two tries. There's some
 // room for improvement here, but I'm not sure what that would look like. Probably would need the
@@ -141,15 +142,20 @@ export default async function fabricate({
     while (result === null) {
         tries += 1;
         console.log(`try ${tries}`);
+
+        if (tries > 10) {
+            throw new Error("Too many tries, giving up.");
+        }
+
         try {
             const response = await cli.generate({
                 model,
                 prompt,
                 format: "json",
-                keep_alive: 0,
+                keep_alive: 999999,
             });
 
-            console.log("model response:", JSON.stringify(JSON.parse(response.response)));
+            console.log("model response:", response.response);
 
             let data: MistralToolUse[] | MistralToolUse = JSON.parse(response.response);
 

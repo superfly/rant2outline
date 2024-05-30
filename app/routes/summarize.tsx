@@ -30,8 +30,11 @@ export async function action({ request }: ActionFunctionArgs) {
     const rantSummary = await fabricate({ rant: `${rant}` });
     console.log("fabrication complete");
     return json(rantSummary);
-  } catch (error) {
-    return new Response("Failed to summarize rant.", { status: 500 });
+  } catch (error: any) {
+    return new Response(
+      `Failed to summarize rant. Maybe this error message can help:\n\n${error.message}`,
+      { status: 500 }
+    );
   }
 }
 
@@ -76,6 +79,10 @@ ${data.key_takeaways.map((takeaway: string) => `- ${takeaway}`).join("\n")}
 ${data.sections.map((section: string) => `### ${section}`).join("\n\n")}
 `}
       </textarea>
+
+      <p>
+        <a href="/">Again, again!</a>
+      </p>
     </div>
   );
 }

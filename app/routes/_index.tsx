@@ -15,12 +15,15 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   const [loading, setLoading] = useState(false);
   const [periodCount, setPeriodCount] = useState(0);
+  const [rant, setRant] = useState("");
   return (
     <div>
       <h1>rant2outline</h1>
       <p>Turn those rants into meetup talk outlines!</p>
       <Form method="post" action="/summarize">
-        <span style={{ marginBottom: "4rem" }}>Enter your rant here:</span>
+        <span style={{ marginBottom: "4rem" }}>
+          Enter your rant here, the longer the better:
+        </span>
         <br />
         <br />
         <textarea
@@ -28,6 +31,8 @@ export default function Index() {
           name="rant"
           required
           readOnly={loading}
+          value={rant}
+          onChange={(e) => setRant(e.target.value)}
         ></textarea>
         <br />
         <br />
@@ -46,7 +51,7 @@ export default function Index() {
                 }
                 return prev + 1;
               });
-            }, 250);
+            }, 500);
           }}
         >
           Summarize
